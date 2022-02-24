@@ -1,0 +1,136 @@
+#include <iostream>
+#include <utility>
+
+using namespace std;
+
+class Transaction {
+struct Tran {
+    string tranId, name, movieName, date, time;
+    float price = 0, total = 0;
+    int seats = 0;
+
+    Tran* next;
+};
+struct Tran* headTran;
+Tran* sortedTran;
+
+public:
+    void transactionHistory(string id, string name, string movieName, string date, string time, float price, int seat);
+    void sortedTranInsert(Tran* newnode);
+    void insertSortingTran();
+    void addTran();
+    void viewTran();
+    void sortTran();
+    void TranPage();
+    void searchTran();
+} tran;
+
+void Transaction::transactionHistory(string id, string name, string movieName, string date, string time, float price, int seats) {
+    auto new_tran = new struct Tran;
+    new_tran->tranId = std::move(id);
+    new_tran->name = std::move(name);
+    new_tran->movieName = std::move(movieName);
+    new_tran->date = std::move(date);
+    new_tran->time = std::move(time);
+    new_tran->price = price;
+    new_tran->seats = seats;
+    new_tran->total = new_tran->price * new_tran->seats;
+
+    new_tran->next = headTran;
+    headTran = new_tran;
+}
+
+void Transaction::sortedTranInsert(Tran* newnode) {
+    if (sortedTran == nullptr || sortedTran->total <= newnode->total) {
+        newnode->next = sortedTran;
+        sortedTran = newnode;
+    }
+    else {
+        Tran* current = sortedTran;
+        while (current->next != nullptr
+               && current->next->total > newnode->total) {
+            current = current->next;
+        }
+        newnode->next = current->next;
+        current->next = newnode;
+    }
+}
+
+void Transaction::insertSortingTran() {
+
+}
+
+void Transaction::addTran() {
+    // Title
+    cout << "=============================Add Purchase==============================";
+
+}
+
+void Transaction::viewTran() {
+    // Title
+    cout << "===========================View All Purchase===========================";
+
+}
+
+void Transaction::sortTran() {
+    // Title
+    cout << "=============================Sort Purchase=============================";
+
+}
+
+void Transaction::searchTran() {
+    // Title
+    cout << "===========================Search Purchase=============================";
+
+}
+
+void Transaction::TranPage() {
+    menu:
+    cout << "\n[1] Add Purchase"
+            "\n[2] View All Purchase"
+            "\n[3] Sort Purchase"
+            "\n[4] Search Purchase"
+            "\n[5] Exit"
+         << endl;
+    int choice = 0;
+    cin >> choice;
+    switch (choice) {
+        case 1:
+            tran.addTran();
+            break;
+        case 2:
+            tran.viewTran();
+            break;
+        case 3:
+            tran.sortTran();
+            break;
+        case 4:
+            tran.searchTran();
+            break;
+        case 5:
+            cout << "Are you sure you want to exit? (Y/N)";
+            opt:
+            char yn;
+            cin >> yn;
+            if (yn == 'Y' || yn == 'y') {
+                break;
+            } else if (yn == 'N' || yn == 'n') {
+                goto menu;
+            } else {
+                cout << "Invalid input!!! Please enter Y or N.";
+                goto opt;
+            }
+        default:
+            cout << "Invalid input! Please select your choice (1-5)";
+            goto menu;
+    }
+}
+
+int main() {
+    tran.transactionHistory("T001", "Michael", "Super gym bros two","2/4/2022","08:50",18,2);
+    tran.transactionHistory("T003", "Tony","Sanic the","30/2/2022","15:30",16,5);
+    tran.transactionHistory("T002", "Sparky","Jack and the dog","2/4/2022","08:50",20,1);
+    tran.transactionHistory("T004", "Bobby","Sanic the","30/2/2022","15:30",16,3);
+
+    tran.TranPage();
+}
