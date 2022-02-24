@@ -74,17 +74,20 @@ void Transaction::insertSortingTran(Tran* ref) {
 }
 
 void Transaction::backButton() {
-    
+
 }
 
 void Transaction::addTran() {
     auto* add_tran = new struct Tran;
-    int mov, dat, tim;
+    int mov, dat, tim, seato;
     // Title
     cout << "\n=============================Add Purchase==============================" << endl;
 
     //Add function
-    
+    add_tran->tranId = "T005";
+    cout << "Enter Name:\n";
+    cin >> add_tran->name;
+
     //Choose Movie
     movmenu:
     cout << "\nChoose Movie:"
@@ -95,18 +98,21 @@ void Transaction::addTran() {
     switch (mov) {
         case 1:
             add_tran->movieName = "Jack and the";
+            add_tran->price = 20;
             goto datemenu;
         case 2:
             add_tran->movieName = "Sanic the";
+            add_tran->price = 16;
             goto datemenu;
         case 3:
             add_tran->movieName = "Super gym bros";
+            add_tran->price = 18;
             goto datemenu;
         default:
             cout << "Please choose from 1-3" << endl;
             goto movmenu;
     }
-    
+
     // Choose Date
     datemenu:
     cout << "\nChoose date:"
@@ -117,18 +123,18 @@ void Transaction::addTran() {
     switch (dat) {
         case 1:
             add_tran->date = "25/2/2023";
-            goto datemenu;
+            goto timemenu;
         case 2:
             add_tran->date = "27/2/2034";
-            goto datemenu;
+            goto timemenu;
         case 3:
             add_tran->date = "29/2/2064";
-            goto datemenu;
+            goto timemenu;
         default:
             cout << "Please choose from 1-3" << endl;
-            goto timemenu;
+            goto datemenu;
     }
-    
+
     //Choose Time
     timemenu:
     cout << "\nChoose Time:"
@@ -139,25 +145,35 @@ void Transaction::addTran() {
     switch (tim) {
         case 1:
             add_tran->time = "10:25";
-            goto timemenu;
+            goto seatsmenu;
         case 2:
             add_tran->time = "13:35";
-            goto timemenu;
+            goto seatsmenu;
         case 3:
             add_tran->time = "15:45";
-            goto timemenu;
+            goto seatsmenu;
         default:
             cout << "Please choose from 1-3" << endl;
-            goto seatsmenu;
+            goto timemenu;
     }
 
-    //Choose seats:
+    //Key in seats:
     seatsmenu:
-    cout << "\nChoose Time:"
-            "\n[1]10:25"
-            "\n[2]13:35"
-            "\n[3]15:45";
+    cout << "\nEnter seats:" << endl;
+    cin >> add_tran->seats;
+    while (add_tran->seats < 0 || add_tran->seats > 10 || cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Enter a positive number/Cannot book more than 10 seats!";
+        goto seatsmenu;
+    }
 
+    // Calculate total amount
+    add_tran->total = add_tran->price*add_tran->seats;
+
+    add_tran->next = headTran;
+    headTran = add_tran;
+    cout << "Transaction Successful!!!";
 }
 
 void Transaction::viewTran() {
